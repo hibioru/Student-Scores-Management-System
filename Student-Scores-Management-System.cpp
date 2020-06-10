@@ -7,14 +7,16 @@ using namespace std;
 ///全局变量区域
 ///
 
-int stu_num = 0;//学生人数
-const int course_num = 1;//课程的门数（受结构体定义限制，请使用指针修改此参数）
+int stu_num = 0;//学生实际人数
+int course_num = 0;//课程实际门数
 
 //定义结构体类型“学生成绩”
 struct student_scores {
-	int stu_id;
-	string stu_name;
-	int stu_score[course_num];
+	int stu_id = 0;//学生学号
+	string stu_name;//学生姓名
+	int stu_score[6] = {0};//各门课程的成绩（课程最大不超过6门）
+	int stu_sum = 0;//学生的总分
+	float stu_average = 0;//学生的平均分
 };
 
 #pragma endregion
@@ -35,7 +37,51 @@ struct student_scores {
 ///基础功能
 ///
 
+//菜单1 - 录入每个学生的学号、姓名和各科考试成绩
+void student_scores_input(student_scores stu[], int n)
+{
+	cout << "Input course number(m<=6):" << endl;
+	cin >> course_num;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> stu[i].stu_id >> stu[i].stu_name;
+		for (int j = 0; j < course_num; j++)
+		{
+			cin >>  stu[i].stu_score[j];
+		}
+	}
+}
 
+//菜单2 - 计算每门课程的总分和平均分
+void course_scores_sum_and_average(student_scores stu[], int n)
+{
+
+}
+
+//菜单3 - 计算每个学生的总分和平均分
+void student_scores_sum_and_average(student_scores stu[], int n)
+{
+	//计算部分
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < course_num; j++)
+		{
+			stu[i].stu_sum = stu[i].stu_sum + stu[i].stu_score[j];
+		}
+		stu[i].stu_average = stu[i].stu_sum / course_num;
+	}
+	//输出部分
+	for (int i = 0; i < n; i++)
+	{
+		cout << stu[i].stu_name << ":  sum=" << stu[i].stu_sum << ",  aver=" << stu[i].stu_average << endl;
+	}
+}
+
+//菜单11 - 输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
+void score_output(student_scores stu[], int n)
+{
+
+}
 
 #pragma endregion
 
@@ -80,6 +126,24 @@ int main()
 	//输入学生人数
 	cout << "Input student number(n<30):" << endl;
 	cin >> stu_num;
+	student_scores stu[30];//学生人数不超过30人
+
+	#if 1
+	//if 0 时该代码片段处于注释状态，if 1 时该代码片段会执行
+	//用于程序初始化时自动注入样例数据，不必执行“菜单选项1”，从而可以直接调试其他菜单选项的模块
+	//调试其他模块时，请把对应模块函数引用的stu（外部!）改为stu2
+	stu_num = 6;
+	course_num = 3;
+	student_scores stu2[6] =
+	{
+		{11003001,"lisi",87,82,89},
+		{11003005,"heli",98,92,90},
+		{11003003,"ludi",75,78,80},
+		{11003002,"dumo",48,50,67},
+		{11003004,"zuma",65,69,72},
+		{11003006,"suyu",100,95,94}
+	};
+	#endif
 
 	//程序主面板显示
 	while (1)
@@ -96,19 +160,20 @@ int main()
 			<< "9.Search by name" << endl //（9）按姓名查询学生排名及其考试成绩
 			<< "10.Statistic analysis" << endl //（10）按优秀（90~100）、良好（80~89）、中等（70~79）、及格（60~69）、不及格（0~59）5个类别，对每门课程分别统计每个类别的人数以及所占的百分比
 			<< "11.List record" << endl //（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
-			<< "0.Exit" << endl; //退出程序
+			<< "0.Exit" << endl //退出程序
+			<< "Please Input your choice:" << endl;
 		int menu = 0; //菜单选项
 		cin >> menu;
 		switch (menu)
 		{
 		case 1:
-
+			student_scores_input(stu, stu_num);
 			break;
 		case 2:
-
+			course_scores_sum_and_average(stu, stu_num);
 			break;
 		case 3:
-
+			student_scores_sum_and_average(stu, stu_num);
 			break;
 		case 4:
 
