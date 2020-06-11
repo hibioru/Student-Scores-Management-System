@@ -93,8 +93,6 @@ void score_output(student_scores stu[], int n)
 ///ÅÅĞò¹¦ÄÜ
 ///
 
-
-
 #pragma endregion
 
 
@@ -178,7 +176,6 @@ int main()
 			student_scores_sum_and_average(stu, stu_num);
 			break;
 		case 4:
-
 			
 			break;
 		case 5:
@@ -188,7 +185,7 @@ int main()
 			
 			break;
 		case 7:
-			
+			//ÎÌ´Ï´Ï
 			break;
 		case 8:
 
