@@ -11,8 +11,8 @@ using namespace std;
 
 int stu_num = 0;//学生实际人数
 int course_num = 0;//课程实际门数
-int course_scores_sum = 0;//课程总分
-float course_average = 0;//课程平均分
+int course_scores_sum[6] = {0};//课程总分
+float course_average[6] = {0};//课程平均分
 //定义结构体类型“学生成绩”
 struct student_scores {
 	int stu_id = 0;//学生学号
@@ -62,9 +62,17 @@ void course_scores_sum_and_average(student_scores stu[], int n)
 
 	for (int k = 0;k <= stu_num;k++)//此处k为学生人数
 	{
-		course_scores_sum = course_scores_sum + stu[k].stu_score[n];
+		course_scores_sum[6] = course_scores_sum[6] + stu[k].stu_score[n];
+		course_average[6] = course_scores_sum[6] / stu_num;
 	}
-	course_average = course_scores_sum / stu_num;
+	//输出结果
+	
+	for (int i = 0; i < course_num; i++)
+	{
+		cout << "course sum:" << course_scores_sum[i] << " " << "course aver:" << course_average[i];
+	}
+	
+	
 }
 
 //菜单3 - 计算每个学生的总分和平均分
@@ -89,7 +97,15 @@ void student_scores_sum_and_average(student_scores stu[], int n)
 //菜单11 - 输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
 void score_output(student_scores stu[], int n)
 {
-	
+	for (n = 0;n < stu_num;n++)
+	{
+		cout << stu[n].stu_id << " " << stu[n].stu_name;
+		for (int c = 0;c < course_num;c++)
+		{
+			cout << stu[n].stu_score[c];
+		}
+		cout << stu[n].stu_sum << " " << stu[n].stu_average;
+	}
 }
 
 #pragma endregion
