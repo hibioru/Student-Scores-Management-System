@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <stdlib.h>
 using namespace std;
 
 
@@ -177,15 +179,16 @@ int main()
 			break;
 		case 4:
 
+			
 			break;
 		case 5:
-
+			
 			break;
 		case 6:
-
+			
 			break;
 		case 7:
-
+			
 			break;
 		case 8:
 
@@ -206,6 +209,7 @@ int main()
 		}
 	}
 	
+
 	return 0;
 }
 
