@@ -279,7 +279,7 @@ int main()
 
 			break;
 		case 11:
-
+			score_output(stu, stu_num);
 			break;
 		case 0:
 			return 0;
