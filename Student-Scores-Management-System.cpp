@@ -165,7 +165,35 @@ void name_list(student_scores stu[])//按姓名，小到大
 ///
 ///统计功能
 ///
-
+void count(student_scores stu[])
+{
+	int peo[6];
+	int n = 1;
+	for (int i = 0; i < stu_num; i++)
+		peo[i] = 0;
+	while (n <= course_num)
+	{
+		printf("For course %d\n", n);
+		for (int i = 0; i < stu_num; i++)
+		{
+			if (stu[i].stu_score[n - 1] < 60) peo[0]++;
+			else if (stu[i].stu_score[n - 1] < 70 && stu[i].stu_score[n - 1] >= 60) peo[1]++;
+			else if (stu[i].stu_score[n - 1] < 80 && stu[i].stu_score[n - 1] >= 70) peo[2]++;
+			else if (stu[i].stu_score[n - 1] < 90 && stu[i].stu_score[n - 1] >= 80) peo[3]++;
+			else if (stu[i].stu_score[n - 1] < 100 && stu[i].stu_score[n - 1] >= 90) peo[4]++;
+			else peo[5]++;
+		}
+		printf("<60\t%d\t%.2f%%\n", peo[0], 100 * (double)peo[0] / (double)stu_num);
+		printf("60-69\t%d\t%.2f%%\n", peo[1], 100 * (double)peo[1] / (double)stu_num);
+		printf("70-79\t%d\t%.2f%%\n", peo[2], 100 * (double)peo[2] / (double)stu_num);
+		printf("80-89\t%d\t%.2f%%\n", peo[3], 100 * (double)peo[3] / (double)stu_num);
+		printf("90-99\t%d\t%.2f%%\n", peo[4], 100 * (double)peo[4] / (double)stu_num);
+		printf("100\t%d\t%.2f%%\n", peo[5], 100 * (double)peo[5] / (double)stu_num);
+		for (int i = 0; i < stu_num; i++)
+			peo[i] = 0;
+		n++;
+	}
+}
 
 
 #pragma endregion
@@ -253,7 +281,7 @@ int main()
 
 			break;
 		case 10:
-
+			count(stu);
 			break;
 		case 11:
 
