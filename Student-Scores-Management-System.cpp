@@ -92,7 +92,62 @@ void score_output(student_scores stu[], int n)
 ///
 ///排序功能
 ///
+void printfs_middle(student_scores stu[], int a)
+{
+	cout << stu[a].stu_id << "\t";
+	cout << stu[a].stu_name << "\t";
+	for (int i = 0; i < course_num; i++)
+		cout << stu[a].stu_score[i] << "\t";
+	cout << stu[a].stu_sum << "\t";
+	cout << stu[a].stu_average << endl;
+}
 
+void score_list(student_scores stu[], int sym)//sym=4为大到小；5为小到大。sym==6为排学号
+{
+	int a;
+	int *temp;
+	temp = new int[stu_num];
+	if (sym == 4 || sym == 5)
+	for (int i = 0; i <stu_num; i++)
+		temp[i] = stu[i].stu_sum;
+
+	if (sym == 6)
+	for (int i = 0; i < stu_num; i++)
+		temp[i] = stu[i].stu_id;
+
+	for (int i = 0; i < stu_num; i++)
+	{
+		a = 0;
+		for (int j = 0; j < stu_num; j++)
+		{
+			if (sym == 4) a = temp[j] > temp[a] ? j : a;
+			if (sym == 5 || sym == 6) a = temp[a] < temp[j] ? a : j;
+		}
+		if (sym == 4) temp[a] = 0;
+		if (sym == 5 || sym == 6) temp[a] = 99999999;
+
+		printfs_middle(stu, a);
+	}
+	cout << endl;
+}
+
+void name_list(student_scores stu[])//按姓名，小到大
+{
+	int a;
+	string *temp = new string[stu_num];
+	for (int i = 0; i <stu_num; i++)
+		temp[i] = stu[i].stu_name;
+
+	for (int i = 0; i < stu_num; i++)
+	{
+		a = 0;
+		for (int j = 0; j < stu_num; j++)
+			a = temp[j] < temp[a] ? j : a;
+		temp[a] = '~';
+		printfs_middle(stu, a);
+	}
+	cout << endl;
+}
 #pragma endregion
 
 
@@ -176,16 +231,20 @@ int main()
 			student_scores_sum_and_average(stu, stu_num);
 			break;
 		case 4:
-			
+			printf("Sort in descending order by score:\n");
+			score_list(stu, menu);
 			break;
 		case 5:
-			
+			printf("Sort in ascending order by score:\n");
+			score_list(stu, menu);
 			break;
 		case 6:
-			
+			printf("Sort in ascending order by number:\n");
+			score_list(stu, menu);
 			break;
 		case 7:
-			//翁聪聪
+			printf("Sort in dictionary order by name:\n");
+			name_list(stu);
 			break;
 		case 8:
 
