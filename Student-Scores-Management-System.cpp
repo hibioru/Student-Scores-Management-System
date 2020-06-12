@@ -1,6 +1,6 @@
 #include <iostream>
+#include <cstdlib>
 #include <string>
-#include <stdlib.h>
 using namespace std;
 
 
@@ -8,12 +8,12 @@ using namespace std;
 ///
 ///全局变量区域
 ///
-int checking_stu_id= 0;//被查询的学生学号
+
 int stu_num = 0;//学生实际人数
 int course_num = 0;//课程实际门数
 int course_scores_sum[6] = {0};//课程总分
-float course_average[6] = {0};//课程平均分
-string checking_stu_name = 0;//被查询学生的姓名
+float course_scores_average[6] = {0};//课程平均分
+
 //定义结构体类型“学生成绩”
 struct student_scores {
 	int stu_id = 0;//学生学号
@@ -31,7 +31,14 @@ struct student_scores {
 ///全局函数区域
 ///
 
-
+//学生成绩输出（以成绩条的方式输出）
+void score_bar(student_scores stu[], int a)//a为学生序号
+{
+	cout << stu[a].stu_id << "\t" << stu[a].stu_name << "\t";
+	for (int i = 0; i < course_num; i++)
+		cout << stu[a].stu_score[i] << "\t";
+	cout << stu[a].stu_sum << "\t" << stu[a].stu_average << endl;
+}
 
 #pragma endregion
 
@@ -42,7 +49,7 @@ struct student_scores {
 ///
 
 //菜单1 - 录入每个学生的学号、姓名和各科考试成绩
-void student_scores_input(student_scores stu[], int n)
+void student_scores_input(student_scores stu[], int n)//n为学生实际人数
 {
 	cout << "Input course number(m<=6):" << endl;
 	cin >> course_num;
@@ -51,38 +58,37 @@ void student_scores_input(student_scores stu[], int n)
 		cin >> stu[i].stu_id >> stu[i].stu_name;
 		for (int j = 0; j < course_num; j++)
 		{
-			cin >>  stu[i].stu_score[j];
+			cin >> stu[i].stu_score[j];
 		}
 	}
 }
 
 //菜单2 - 计算每门课程的总分和平均分
-void course_scores_sum_and_average(student_scores stu[], int n)
+void course_scores_sum_and_average(student_scores stu[], int n)//n为学生实际人数
 {
-	//n是具体指哪一门课程
-
-	for (int k = 0;k <= stu_num;k++)//此处k为学生人数
+	//计算部分
+	for (int i = 0; i < course_num; i++)//逐个计算每门课程的平均分和总分
 	{
-		course_scores_sum[6] = course_scores_sum[6] + stu[k].stu_score[n];
-		course_average[6] = course_scores_sum[6] / stu_num;
+		for (int k = 0; k <= n; k++)//累加每个学生对应课程的分数
+		{
+			course_scores_sum[i] = course_scores_sum[i] + stu[k].stu_score[n];
+		}
+		course_scores_average[i] = course_scores_sum[i] / n;
 	}
-	//输出结果
-	
+	//输出部分
 	for (int i = 0; i < course_num; i++)
 	{
-		cout << "course sum:" << course_scores_sum[i] << " " << "course aver:" << course_average[i];
+		cout << "course " << i+1 << " :  sum=" << course_scores_sum[i] << ",  aver=" << course_scores_average[i];
 	}
-	
-	
 }
 
 //菜单3 - 计算每个学生的总分和平均分
-void student_scores_sum_and_average(student_scores stu[], int n)
+void student_scores_sum_and_average(student_scores stu[], int n)//n为学生实际人数
 {
 	//计算部分
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)//逐个计算每个学生的总分和平均分
 	{
-		for (int j = 0; j < course_num; j++)
+		for (int j = 0; j < course_num; j++)//累加对应学生每门课程的分数
 		{
 			stu[i].stu_sum = stu[i].stu_sum + stu[i].stu_score[j];
 		}
@@ -96,16 +102,11 @@ void student_scores_sum_and_average(student_scores stu[], int n)
 }
 
 //菜单11 - 输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
-void score_output(student_scores stu[], int n)
+void score_output(student_scores stu[], int n)//n为学生实际人数
 {
-	for (n = 0;n < stu_num;n++)
+	for (int i = 0; i < n; i++)//逐个输出学生的成绩条
 	{
-		cout << stu[n].stu_id << " " << stu[n].stu_name;
-		for (int c = 0;c < course_num;c++)
-		{
-			cout << stu[n].stu_score[c];
-		}
-		cout << stu[n].stu_sum << " " << stu[n].stu_average;
+		score_bar(stu, i);
 	}
 }
 
@@ -116,20 +117,12 @@ void score_output(student_scores stu[], int n)
 ///
 ///排序功能
 ///
-void printfs_middle(student_scores stu[], int a)
-{
-	cout << stu[a].stu_id << "\t";
-	cout << stu[a].stu_name << "\t";
-	for (int i = 0; i < course_num; i++)
-		cout << stu[a].stu_score[i] << "\t";
-	cout << stu[a].stu_sum << "\t";
-	cout << stu[a].stu_average << endl;
-}
 
-void score_list(student_scores stu[], int sym)//sym=4为大到小；5为小到大。sym==6为排学号
+//菜单4、5 - 按每个学生的总分【由高到低/由低到高】排出名次表、菜单6 - 按学号由小到大排出成绩表
+void score_list(student_scores stu[], int sym)//sym=4为按总分由高到低，5为按总分由低到高；sym==6为按学号由小到大
 {
-	int a;
-	int *temp;
+	int a = 0;
+	int *temp = 0;
 	temp = new int[stu_num];
 	if (sym == 4 || sym == 5)
 	for (int i = 0; i <stu_num; i++)
@@ -150,12 +143,13 @@ void score_list(student_scores stu[], int sym)//sym=4为大到小；5为小到大。sym==6
 		if (sym == 4) temp[a] = 0;
 		if (sym == 5 || sym == 6) temp[a] = 99999999;
 
-		printfs_middle(stu, a);
+		score_bar(stu, a);
 	}
 	cout << endl;
 }
 
-void name_list(student_scores stu[])//按姓名，小到大
+//菜单7 - 按姓名的字典顺序排出成绩表
+void name_list(student_scores stu[])
 {
 	int a;
 	string *temp = new string[stu_num];
@@ -168,7 +162,7 @@ void name_list(student_scores stu[])//按姓名，小到大
 		for (int j = 0; j < stu_num; j++)
 			a = temp[j] < temp[a] ? j : a;
 		temp[a] = '~';
-		printfs_middle(stu, a);
+		score_bar(stu, a);
 	}
 	cout << endl;
 }
@@ -179,27 +173,43 @@ void name_list(student_scores stu[])//按姓名，小到大
 ///
 ///查询功能
 ///
-void checking_out(student_scores stu[], int n,string k)
+
+//菜单8 - 按学号查询学生排名及其考试成绩
+void checking_out_for_id(student_scores stu[], int n)//n为学生实际人数
 {
+	cout << "Input the number you want to search:" << endl;
+	int checking_stu_id = 0;//被查询的学生学号
+	cin >> checking_stu_id;
 	int i = 0;
-	for (  i = 0;  i <stu_num ;  i++)
+	for (i = 0; i < n; i++)
 	{
-		if ((stu[i].stu_id == checking_stu_id) || (stu[i].stu_name==checking_stu_name))
+		if (stu[i].stu_id == checking_stu_id)
 		{
-			cout << stu[i].stu_id << " " << stu[i].stu_name << " " << endl;
-			for (int d = 0;d < course_num;d++)
-			{
-				cout << stu[i].stu_score;
-			}
-			cout << stu[i].stu_sum << " " << stu[i].stu_average;
+			score_bar(stu, i);
 			break;
 		}
-		
 	}
-	if ((stu[i].stu_id != checking_stu_id) || (stu[i].stu_name != checking_stu_name))
-	{
+	if (stu[i].stu_id != checking_stu_id)
 		cout << "We can't check out this student.";
+}
+
+//菜单9 - 按姓名查询学生排名及其考试成绩
+void checking_out_for_name(student_scores stu[], int n)//n为学生实际人数
+{
+	cout << "Input the name you want to search:" << endl;
+	string checking_stu_name = 0;//被查询学生的姓名
+	cin >> checking_stu_name;
+	int i = 0;
+	for (i = 0; i < n; i++)
+	{
+		if (stu[i].stu_name == checking_stu_name)
+		{
+			score_bar(stu, i);
+			break;
+		}
 	}
+	if (stu[i].stu_name != checking_stu_name)
+		cout << "We can't check out this student.";
 }
 
 #pragma endregion
@@ -209,9 +219,11 @@ void checking_out(student_scores stu[], int n,string k)
 ///
 ///统计功能
 ///
+
+//菜单10 - 对每门课程分别统计每个类别的人数以及所占的百分比
 void count(student_scores stu[])
 {
-	int peo[6];
+	int peo[6] = {0};
 	int n = 1;
 	for (int i = 0; i < stu_num; i++)
 		peo[i] = 0;
@@ -285,7 +297,7 @@ int main()
 			<< "7.Sort in dictionary order by name" << endl //（7）按姓名的字典顺序排出成绩表
 			<< "8.Search by number" << endl //（8）按学号查询学生排名及其考试成绩
 			<< "9.Search by name" << endl //（9）按姓名查询学生排名及其考试成绩
-			<< "10.Statistic analysis" << endl //（10）按优秀（90~100）、良好（80~89）、中等（70~79）、及格（60~69）、不及格（0~59）5个类别，对每门课程分别统计每个类别的人数以及所占的百分比
+			<< "10.Statistic analysis" << endl //（10）对每门课程分别统计每个类别的人数以及所占的百分比
 			<< "11.List record" << endl //（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
 			<< "0.Exit" << endl //退出程序
 			<< "Please Input your choice:" << endl;
@@ -319,12 +331,10 @@ int main()
 			name_list(stu);
 			break;
 		case 8:
-			printf("Input the student's id which you want to check:");
-			checking_out(stu,checking_stu_id,0);
+			checking_out_for_id(stu, stu_num);
 			break;
 		case 9:
-			printf("Input the student's name which you want to check");
-			checking_out(stu, 0, checking_stu_name);
+			checking_out_for_name(stu, stu_num);
 			break;
 		case 10:
 			count(stu);
@@ -339,7 +349,6 @@ int main()
 		}
 	}
 	
-
 	return 0;
 }
 
