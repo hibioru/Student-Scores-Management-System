@@ -9,10 +9,10 @@ using namespace std;
 ///全局变量区域
 ///
 
-int stu_num = 0;//学生实际人数
-int course_num = 0;//课程实际门数
-int course_scores_sum[6] = {0};//课程总分
-float course_scores_average[6] = {0};//课程平均分
+int stu_num ;//学生实际人数
+int course_num;//课程实际门数
+int course_scores_sum[6];//课程总分
+float course_scores_average[6];//课程平均分
 
 //定义结构体类型“学生成绩”
 struct student_scores {
@@ -51,8 +51,13 @@ void score_bar(student_scores stu[], int a)//a为学生序号
 //菜单1 - 录入每个学生的学号、姓名和各科考试成绩
 void student_scores_input(student_scores stu[], int n)//n为学生实际人数
 {
-	cout << "Input course number(m<=6):" << endl;
-	cin >> course_num;
+	do
+	{
+		cout << "Input course number(m<=6):" << endl;
+		cin.clear();
+		cin.sync();
+	} while (!(cin >> course_num));
+
 	cout << "Input student's ID, name and score:" << endl;
 	for (int i = 0; i < n; i++)
 	{
@@ -264,8 +269,12 @@ int main()
 {
 	
 	//输入学生人数
-	cout << "Input student number(n<30):" << endl;
-	cin >> stu_num;
+	do
+	{
+		cout << "Input student number(n<30):" << endl;
+		cin.clear();
+		cin.sync();
+	} while (!(cin >> stu_num));
 	student_scores stu[30];//学生人数不超过30人
 
 	#if 0
@@ -288,22 +297,28 @@ int main()
 	//程序主面板显示
 	while (1)
 	{
-		cout << "Management for Students' scores" << endl //学生成绩管理 - 主菜单
-			<< "1.Input record" << endl //（1）录入每个学生的学号、姓名和各科考试成绩
-			<< "2.Caculate total and average score of every course" << endl //（2）计算每门课程的总分和平均分
-			<< "3.Caculate total and average score of every student" << endl //（3）计算每个学生的总分和平均分
-			<< "4.Sort in descending order by score" << endl //（4）按每个学生的总分由高到低排出名次表
-			<< "5.Sort in ascending order by score" << endl //（5）按每个学生的总分由低到高排出名次表
-			<< "6.Sort in ascending order by number" << endl //（6）按学号由小到大排出成绩表
-			<< "7.Sort in dictionary order by name" << endl //（7）按姓名的字典顺序排出成绩表
-			<< "8.Search by number" << endl //（8）按学号查询学生排名及其考试成绩
-			<< "9.Search by name" << endl //（9）按姓名查询学生排名及其考试成绩
-			<< "10.Statistic analysis" << endl //（10）对每门课程分别统计每个类别的人数以及所占的百分比
-			<< "11.List record" << endl //（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
-			<< "0.Exit" << endl //退出程序
-			<< "Please Input your choice:" << endl;
-		int menu = 0; //菜单选项
-		cin >> menu;
+		int menu ; //菜单选项
+		do
+		{
+			cout << "Management for Students' scores" << endl //学生成绩管理 - 主菜单
+				<< "1.Input record" << endl //（1）录入每个学生的学号、姓名和各科考试成绩
+				<< "2.Caculate total and average score of every course" << endl //（2）计算每门课程的总分和平均分
+				<< "3.Caculate total and average score of every student" << endl //（3）计算每个学生的总分和平均分
+				<< "4.Sort in descending order by score" << endl //（4）按每个学生的总分由高到低排出名次表
+				<< "5.Sort in ascending order by score" << endl //（5）按每个学生的总分由低到高排出名次表
+				<< "6.Sort in ascending order by number" << endl //（6）按学号由小到大排出成绩表
+				<< "7.Sort in dictionary order by name" << endl //（7）按姓名的字典顺序排出成绩表
+				<< "8.Search by number" << endl //（8）按学号查询学生排名及其考试成绩
+				<< "9.Search by name" << endl //（9）按姓名查询学生排名及其考试成绩
+				<< "10.Statistic analysis" << endl //（10）对每门课程分别统计每个类别的人数以及所占的百分比
+				<< "11.List record" << endl //（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
+				<< "0.Exit" << endl //退出程序
+				<< "Please Input your choice:" << endl;
+
+			cin.clear();
+			cin.sync();
+		} while (!(cin >> menu));
+		
 		switch (menu)
 		{
 		case 1:
