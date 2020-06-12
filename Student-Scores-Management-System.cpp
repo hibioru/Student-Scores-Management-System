@@ -72,7 +72,7 @@ void course_scores_sum_and_average(student_scores stu[], int n)//n为学生实际人数
 	{
 		for (int k = 0; k <= n; k++)//累加每个学生对应课程的分数
 		{
-			course_scores_sum[i] = course_scores_sum[i] + stu[k].stu_score[n];
+			course_scores_sum[i] = course_scores_sum[i] + stu[k].stu_score[i];
 		}
 		course_scores_average[i] = course_scores_sum[i] / n;
 	}
