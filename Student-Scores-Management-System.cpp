@@ -53,6 +53,7 @@ void student_scores_input(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 {
 	cout << "Input course number(m<=6):" << endl;
 	cin >> course_num;
+	cout << "Input student's ID, name and score:" << endl;
 	for (int i = 0; i < n; i++)
 	{
 		cin >> stu[i].stu_id >> stu[i].stu_name;
@@ -78,7 +79,7 @@ void course_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 	//Êä³ö²¿·Ö
 	for (int i = 0; i < course_num; i++)
 	{
-		cout << "course " << i+1 << " :  sum=" << course_scores_sum[i] << ",  aver=" << course_scores_average[i];
+		cout << "course" << i + 1 << ": sum=" << course_scores_sum[i] << ", aver=" << course_scores_average[i] << endl;
 	}
 }
 
@@ -97,7 +98,7 @@ void student_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊ
 	//Êä³ö²¿·Ö
 	for (int i = 0; i < n; i++)
 	{
-		cout << stu[i].stu_name << ":  sum=" << stu[i].stu_sum << ",  aver=" << stu[i].stu_average << endl;
+		cout << stu[i].stu_name << ": sum=" << stu[i].stu_sum << ", aver=" << stu[i].stu_average << endl;
 	}
 }
 
@@ -190,14 +191,14 @@ void checking_out_for_id(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 		}
 	}
 	if (stu[i].stu_id != checking_stu_id)
-		cout << "We can't check out this student.";
+		cout << "Not found!" << endl;
 }
 
 //²Ëµ¥9 - °´ĞÕÃû²éÑ¯Ñ§ÉúÅÅÃû¼°Æä¿¼ÊÔ³É¼¨
 void checking_out_for_name(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 {
 	cout << "Input the name you want to search:" << endl;
-	string checking_stu_name = 0;//±»²éÑ¯Ñ§ÉúµÄĞÕÃû
+	string checking_stu_name;//±»²éÑ¯Ñ§ÉúµÄĞÕÃû
 	cin >> checking_stu_name;
 	int i = 0;
 	for (i = 0; i < n; i++)
@@ -209,7 +210,7 @@ void checking_out_for_name(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 		}
 	}
 	if (stu[i].stu_name != checking_stu_name)
-		cout << "We can't check out this student.";
+		cout << "Not found!" << endl;
 }
 
 #pragma endregion
@@ -267,7 +268,7 @@ int main()
 	cin >> stu_num;
 	student_scores stu[30];//Ñ§ÉúÈËÊı²»³¬¹ı30ÈË
 
-	#if 1
+	#if 0
 	//if 0 Ê±¸Ã´úÂëÆ¬¶Î´¦ÓÚ×¢ÊÍ×´Ì¬£¬if 1 Ê±¸Ã´úÂëÆ¬¶Î»áÖ´ĞĞ
 	//ÓÃÓÚ³ÌĞò³õÊ¼»¯Ê±×Ô¶¯×¢ÈëÑùÀıÊı¾İ£¬²»±ØÖ´ĞĞ¡°²Ëµ¥Ñ¡Ïî1¡±£¬´Ó¶ø¿ÉÒÔÖ±½Óµ÷ÊÔÆäËû²Ëµ¥Ñ¡ÏîµÄÄ£¿é
 	//µ÷ÊÔÆäËûÄ£¿éÊ±£¬Çë°Ñ¶ÔÓ¦Ä£¿éº¯ÊıÒıÓÃµÄstu£¨Íâ²¿!£©¸ÄÎªstu2
@@ -343,9 +344,10 @@ int main()
 			score_output(stu, stu_num);
 			break;
 		case 0:
+			cout << "End of program!" << endl;
 			return 0;
 		default:
-			cout << "Ñ¡ÏîÊäÈë´íÎó£¬ÇëÖØĞÂÑ¡Ôñ£¡" << endl;
+			cout << "Input error!" << endl;
 		}
 	}
 	

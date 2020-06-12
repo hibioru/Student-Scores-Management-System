@@ -1,3 +1,4 @@
 ﻿  Student-Scores-Management-System.cpp
-E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(71,39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(77,51): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(96,39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
   Student-Scores-Management-System.vcxproj -> E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Debug\Student-Scores-Management-System.exe
