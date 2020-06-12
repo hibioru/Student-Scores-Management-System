@@ -8,11 +8,12 @@ using namespace std;
 ///
 ///全局变量区域
 ///
-
+int checking_stu_id= 0;//被查询的学生学号
 int stu_num = 0;//学生实际人数
 int course_num = 0;//课程实际门数
 int course_scores_sum[6] = {0};//课程总分
 float course_average[6] = {0};//课程平均分
+string checking_stu_name = 0;//被查询学生的姓名
 //定义结构体类型“学生成绩”
 struct student_scores {
 	int stu_id = 0;//学生学号
@@ -178,8 +179,28 @@ void name_list(student_scores stu[])//按姓名，小到大
 ///
 ///查询功能
 ///
-
-
+void checking_out(student_scores stu[], int n,string k)
+{
+	int i = 0;
+	for (  i = 0;  i <stu_num ;  i++)
+	{
+		if ((stu[i].stu_id == checking_stu_id) || (stu[i].stu_name==checking_stu_name))
+		{
+			cout << stu[i].stu_id << " " << stu[i].stu_name << " " << endl;
+			for (int d = 0;d < course_num;d++)
+			{
+				cout << stu[i].stu_score;
+			}
+			cout << stu[i].stu_sum << " " << stu[i].stu_average;
+			break;
+		}
+		
+	}
+	if ((stu[i].stu_id != checking_stu_id) || (stu[i].stu_name != checking_stu_name))
+	{
+		cout << "We can't check out this student.";
+	}
+}
 
 #pragma endregion
 
@@ -298,10 +319,12 @@ int main()
 			name_list(stu);
 			break;
 		case 8:
-
+			printf("Input the student's id which you want to check:");
+			checking_out(stu,checking_stu_id,0);
 			break;
 		case 9:
-
+			printf("Input the student's name which you want to check");
+			checking_out(stu, 0, checking_stu_name);
 			break;
 		case 10:
 			count(stu);
