@@ -1,8 +1,8 @@
 ﻿  Student-Scores-Management-System.cpp
-E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(77,51): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(96,39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(92,51): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Student-Scores-Management-System.cpp(111,39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
   正在生成代码
   Previous IPDB not found, fall back to full compilation.
-  All 138 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 197 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
   Student-Scores-Management-System.vcxproj -> E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Release\Student-Scores-Management-System.exe

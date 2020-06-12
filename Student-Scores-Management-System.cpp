@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <string>
 using namespace std;
@@ -9,16 +10,17 @@ using namespace std;
 ///全局变量区域
 ///
 
-int stu_num ;//学生实际人数
-int course_num;//课程实际门数
-int course_scores_sum[6];//课程总分
-float course_scores_average[6];//课程平均分
+int stu_num = 0;//学生实际人数
+int course_num = 0;//课程实际门数
+int course_scores_sum[6] = { 0 };//课程总分
+float course_scores_average[6] = { 0 };//课程平均分
+int t = 0;//全局条件执行参数，用于t=1时退出while循环
 
 //定义结构体类型“学生成绩”
 struct student_scores {
 	int stu_id = 0;//学生学号
-	string stu_name;//学生姓名
-	int stu_score[6] = {0};//各门课程的成绩（课程最大不超过6门）
+	string stu_name = "";//学生姓名
+	int stu_score[6] = { 0 };//各门课程的成绩（课程最大不超过6门）
 	int stu_sum = 0;//学生的总分
 	float stu_average = 0;//学生的平均分
 };
@@ -51,12 +53,20 @@ void score_bar(student_scores stu[], int a)//a为学生序号
 //菜单1 - 录入每个学生的学号、姓名和各科考试成绩
 void student_scores_input(student_scores stu[], int n)//n为学生实际人数
 {
-	do
+	cout << "Input course number(m<=6):" << endl;
+	t = 0;
+	while (t == 0)
 	{
-		cout << "Input course number(m<=6):" << endl;
-		cin.clear();
-		cin.sync();
-	} while (!(cin >> course_num));
+		if (cin >> course_num)
+			t = 1;
+		else
+		{
+			cout << "Input error!" << endl;
+			cin.clear(); //将cin重新标记为正确，以达到重新输入的目的
+			while (cin.get() != '\n')	 //清空之前cin缓冲区的数据
+				continue;
+		}
+	}
 
 	cout << "Input student's ID, name and score:" << endl;
 	for (int i = 0; i < n; i++)
@@ -128,7 +138,7 @@ void score_output(student_scores stu[], int n)//n为学生实际人数
 void score_list(student_scores stu[], int sym)//sym=4为按总分由高到低，5为按总分由低到高；sym==6为按学号由小到大
 {
 	int a = 0;
-	int *temp = 0;
+	int *temp = nullptr;
 	temp = new int[stu_num];
 	if (sym == 4 || sym == 5)
 	for (int i = 0; i <stu_num; i++)
@@ -144,7 +154,10 @@ void score_list(student_scores stu[], int sym)//sym=4为按总分由高到低，5为按总分
 		for (int j = 0; j < stu_num; j++)
 		{
 			if (sym == 4) a = temp[j] > temp[a] ? j : a;
-			if (sym == 5 || sym == 6) a = temp[a] < temp[j] ? a : j;
+			if (sym == 5 || sym == 6)
+			{
+				a = temp[a] < temp[j] ? a : j;
+			}
 		}
 		if (sym == 4) temp[a] = 0;
 		if (sym == 5 || sym == 6) temp[a] = 99999999;
@@ -260,6 +273,46 @@ void count(student_scores stu[])
 
 #pragma endregion
 
+
+#pragma region 恢复与备份功能
+///
+///恢复与备份功能
+///
+
+//菜单12 - 恢复学生成绩数据
+void recovery(student_scores stu[], int n)
+{
+	cout << "Input course number(m<=6):" << endl;
+	cin >> course_num;
+	ifstream fin("scores record.txt");
+	for (int i = 0; i < n; i++)
+	{
+		fin >> stu[i].stu_id >> stu[i].stu_name;
+		for (int j = 0; j < course_num; j++)
+			fin >> stu[i].stu_score[j];
+	}
+	fin.close();
+	cout << "Recovery successfully." << endl;
+}
+
+//菜单13 - 备份学生成绩数据
+void backup(student_scores stu[], int n)
+{
+	ofstream fout("scores record.txt");
+	for (int i = 0; i < n; i++)
+	{
+		fout << stu[i].stu_id << "\t" << stu[i].stu_name << "\t";
+		for (int j = 0; j < course_num; j++)
+			fout << stu[i].stu_score[j] << "\t";
+		fout << endl;
+	}
+	fout.close();
+	cout << "Backup successfully." << endl;
+}
+
+#pragma endregion
+
+
 #pragma region 主程序
 ///
 ///主程序
@@ -267,14 +320,21 @@ void count(student_scores stu[])
 
 int main()
 {
-	
 	//输入学生人数
-	do
+	cout << "Input student number(n<30):" << endl;
+	t = 0;
+	while (t == 0)
 	{
-		cout << "Input student number(n<30):" << endl;
-		cin.clear();
-		cin.sync();
-	} while (!(cin >> stu_num));
+		if (cin >> stu_num)
+			t = 1;
+		else
+		{
+			cout << "Input error!" << endl;
+			cin.clear(); //将cin重新标记为正确，以达到重新输入的目的
+			while (cin.get() != '\n')	 //清空之前cin缓冲区的数据
+				continue;
+		}
+	}
 	student_scores stu[30];//学生人数不超过30人
 
 	#if 0
@@ -297,27 +357,37 @@ int main()
 	//程序主面板显示
 	while (1)
 	{
-		int menu ; //菜单选项
-		do
+		int menu = 0; //菜单选项
+		cout << "Management for Students' scores" << endl //学生成绩管理 - 主菜单
+			<< "1.Input record" << endl //（1）录入每个学生的学号、姓名和各科考试成绩
+			<< "2.Caculate total and average score of every course" << endl //（2）计算每门课程的总分和平均分
+			<< "3.Caculate total and average score of every student" << endl //（3）计算每个学生的总分和平均分
+			<< "4.Sort in descending order by score" << endl //（4）按每个学生的总分由高到低排出名次表
+			<< "5.Sort in ascending order by score" << endl //（5）按每个学生的总分由低到高排出名次表
+			<< "6.Sort in ascending order by number" << endl //（6）按学号由小到大排出成绩表
+			<< "7.Sort in dictionary order by name" << endl //（7）按姓名的字典顺序排出成绩表
+			<< "8.Search by number" << endl //（8）按学号查询学生排名及其考试成绩
+			<< "9.Search by name" << endl //（9）按姓名查询学生排名及其考试成绩
+			<< "10.Statistic analysis" << endl //（10）对每门课程分别统计每个类别的人数以及所占的百分比
+			<< "11.List record" << endl //（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
+			<< "12.Recovery record" << endl //（12）恢复学生成绩数据
+			<< "13.Backup record" << endl //（13）备份学生成绩数据
+			<< "0.Exit" << endl //退出程序
+			<< "Please Input your choice:" << endl;
+		
+		t = 0;
+		while (t == 0)
 		{
-			cout << "Management for Students' scores" << endl //学生成绩管理 - 主菜单
-				<< "1.Input record" << endl //（1）录入每个学生的学号、姓名和各科考试成绩
-				<< "2.Caculate total and average score of every course" << endl //（2）计算每门课程的总分和平均分
-				<< "3.Caculate total and average score of every student" << endl //（3）计算每个学生的总分和平均分
-				<< "4.Sort in descending order by score" << endl //（4）按每个学生的总分由高到低排出名次表
-				<< "5.Sort in ascending order by score" << endl //（5）按每个学生的总分由低到高排出名次表
-				<< "6.Sort in ascending order by number" << endl //（6）按学号由小到大排出成绩表
-				<< "7.Sort in dictionary order by name" << endl //（7）按姓名的字典顺序排出成绩表
-				<< "8.Search by number" << endl //（8）按学号查询学生排名及其考试成绩
-				<< "9.Search by name" << endl //（9）按姓名查询学生排名及其考试成绩
-				<< "10.Statistic analysis" << endl //（10）对每门课程分别统计每个类别的人数以及所占的百分比
-				<< "11.List record" << endl //（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分
-				<< "0.Exit" << endl //退出程序
-				<< "Please Input your choice:" << endl;
-
-			cin.clear();
-			cin.sync();
-		} while (!(cin >> menu));
+			if (cin >> menu)
+				t = 1;
+			else
+			{
+				cout << "Input error!" << endl;
+				cin.clear(); //将cin重新标记为正确，以达到重新输入的目的
+				while (cin.get() != '\n')	 //清空之前cin缓冲区的数据
+					continue;
+			}
+		}
 		
 		switch (menu)
 		{
@@ -357,6 +427,12 @@ int main()
 			break;
 		case 11:
 			score_output(stu, stu_num);
+			break;
+		case 12:
+			recovery(stu, stu_num);
+			break;
+		case 13:
+			backup(stu, stu_num);
 			break;
 		case 0:
 			cout << "End of program!" << endl;

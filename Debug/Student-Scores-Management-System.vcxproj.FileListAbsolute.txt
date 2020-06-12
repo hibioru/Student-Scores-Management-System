@@ -1,0 +1,2 @@
+E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Debug\Student-Scores-Management-System.exe
+E:\Clover的代码库\Course Project in GDMU\C++ Course Project\Student-Scores-Management-System\Debug\Student-Scores-Management-System.pdb
