@@ -21,7 +21,6 @@ struct student_scores {
 	int stu_score[6] = {0};//各门课程的成绩（课程最大不超过6门）
 	int stu_sum = 0;//学生的总分
 	float stu_average = 0;//学生的平均分
-	int stu_list = 0;
 };
 
 #pragma endregion
@@ -76,7 +75,7 @@ void course_scores_sum_and_average(student_scores stu[], int n)//n为学生实际人数
 	//计算部分
 	for (int i = 0; i < course_num; i++)//逐个计算每门课程的平均分和总分
 	{
-		for (int k = 0; k < n; k++)//累加每个学生对应课程的分数
+		for (int k = 0; k <= n; k++)//累加每个学生对应课程的分数
 		{
 			course_scores_sum[i] = course_scores_sum[i] + stu[k].stu_score[i];
 		}
@@ -131,36 +130,26 @@ void score_list(student_scores stu[], int sym)//sym=4为按总分由高到低，5为按总分
 	int a = 0;
 	int *temp = 0;
 	temp = new int[stu_num];
-	if (sym == 4 || sym == 5 || sym == 0)
-	{
-		for (int i = 0; i <stu_num; i++)
-			temp[i] = stu[i].stu_sum;
-	}
-
+	if (sym == 4 || sym == 5)
+	for (int i = 0; i <stu_num; i++)
+		temp[i] = stu[i].stu_sum;
 
 	if (sym == 6)
-	{
-		for (int i = 0; i < stu_num; i++)
-			temp[i] = stu[i].stu_id;
-	}
-
-
+	for (int i = 0; i < stu_num; i++)
+		temp[i] = stu[i].stu_id;
 
 	for (int i = 0; i < stu_num; i++)
 	{
 		a = 0;
 		for (int j = 0; j < stu_num; j++)
 		{
-			if (sym == 4 || sym == 0) a = temp[j] > temp[a] ? j : a;
+			if (sym == 4) a = temp[j] > temp[a] ? j : a;
 			if (sym == 5 || sym == 6) a = temp[a] < temp[j] ? a : j;
 		}
-		if (sym == 4 || sym == 0)
-		{
-			temp[a] = 0;
-			stu[a].stu_list = i + 1;
-		}
+		if (sym == 4) temp[a] = 0;
 		if (sym == 5 || sym == 6) temp[a] = 99999999;
-		if (sym != 0) score_bar(stu, a);
+
+		score_bar(stu, a);
 	}
 	cout << endl;
 }
@@ -202,7 +191,7 @@ void checking_out_for_id(student_scores stu[], int n)//n为学生实际人数
 	{
 		if (stu[i].stu_id == checking_stu_id)
 		{
-			printf("%d\t", stu[i].stu_list);
+			printf("%d\t", i);
 			score_bar(stu, i);
 			break;
 		}
@@ -222,7 +211,7 @@ void checking_out_for_name(student_scores stu[], int n)//n为学生实际人数
 	{
 		if (stu[i].stu_name == checking_stu_name)
 		{
-			printf("%d\t", stu[i].stu_list);
+			printf("%d\t", i);
 			score_bar(stu, i);
 			break;
 		}
@@ -331,7 +320,7 @@ int main()
 			cin.clear();
 			cin.sync();
 		} while (!(cin >> menu));
-		score_list(stu, 0);
+		
 		switch (menu)
 		{
 		case 1:
