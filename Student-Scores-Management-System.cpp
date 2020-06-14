@@ -191,6 +191,7 @@ void checking_out_for_id(student_scores stu[], int n)//n为学生实际人数
 	{
 		if (stu[i].stu_id == checking_stu_id)
 		{
+			printf("%d\t", i);
 			score_bar(stu, i);
 			break;
 		}
@@ -210,6 +211,7 @@ void checking_out_for_name(student_scores stu[], int n)//n为学生实际人数
 	{
 		if (stu[i].stu_name == checking_stu_name)
 		{
+			printf("%d\t", i);
 			score_bar(stu, i);
 			break;
 		}
