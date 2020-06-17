@@ -166,7 +166,11 @@ void score_list(student_scores stu[], int sym)//sym=4为按总分由高到低，5为按总分
 		}
 		if (sym == 4||sym==0) temp[a] = 0;
 		if (sym == 5 || sym == 6) temp[a] = 99999999;
-
+		if (sym == 4 || sym == 0)
+		{
+			temp[a] = 0;
+			stu[a].stu_list = i + 1;
+		}
 		if(sym!=0) score_bar(stu, a);
 	}
 	cout << endl;
