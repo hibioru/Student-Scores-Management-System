@@ -1,9 +1,12 @@
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <string>
+#include <iostream>//C++ÊäÈëÊä³öÁ÷±ê×¼¿â
+#include <fstream>//C++ÎÄ¼şÁ÷±ê×¼¿â
+#include <iomanip>//C++ÊäÈëÊä³ö²Ù×İ±ê×¼¿â
+#include <string>//C++StringÀà±ê×¼¿â
 using namespace std;
 
+///C++±ê×¼£ºC++11
+///Windows SDK °æ±¾£º10.0.17763.0
+///Æ½Ì¨¹¤¾ß¼¯£ºVisual Studio 2019 (v142)
 
 #pragma region È«¾Ö±äÁ¿ÇøÓò
 ///
@@ -23,7 +26,7 @@ struct student_scores {
 	int stu_score[6] = { 0 };//¸÷ÃÅ¿Î³ÌµÄ³É¼¨£¨¿Î³Ì×î´ó²»³¬¹ı6ÃÅ£©
 	int stu_sum = 0;//Ñ§ÉúµÄ×Ü·Ö
 	float stu_average = 0;//Ñ§ÉúµÄÆ½¾ù·Ö
-	int stu_list = 0;
+	int stu_rank = 0;//Ñ§Éú³É¼¨µÄ×ÜÅÅÃû
 };
 
 #pragma endregion
@@ -34,13 +37,32 @@ struct student_scores {
 ///È«¾Öº¯ÊıÇøÓò
 ///
 
+//Ñ§Éú³É¼¨Â¼Èëºó¼ÓÔØÊÂ¼ş
+void load_student_scores_sum_and_average(student_scores stu[], int n);
+void load_score_list(student_scores stu[], int n);
+void score_loading(student_scores stu[])//Ñ§Éú³É¼¨Ò»µ©Â¼ÈëÍê±Ï£¬Á¢¿ÌÖ´ĞĞ×Ü·Ö¡¢Æ½¾ù·Ö¡¢ÅÅÃûµÄ¼ÆËã
+{
+	load_student_scores_sum_and_average(stu, stu_num);
+	load_score_list(stu, stu_num);
+}
+
+//Ñ§Éú³É¼¨±êÌâÀ¸´òÓ¡
+void score_title()
+{
+	cout << "ID" << "\t\t" << "Name" << "\t";
+	for (int i = 0; i < course_num; i++)
+		cout << "Course" << i + 1 << "\t";
+	cout << "Sum" << "\t" << "Average" << "\t" << "Rank" << endl;
+}
+
 //Ñ§Éú³É¼¨Êä³ö£¨ÒÔ³É¼¨ÌõµÄ·½Ê½Êä³ö£©
 void score_bar(student_scores stu[], int a)//aÎªÑ§ÉúĞòºÅ
 {
 	cout << stu[a].stu_id << "\t" << stu[a].stu_name << "\t";
 	for (int i = 0; i < course_num; i++)
 		cout << stu[a].stu_score[i] << "\t";
-	cout << stu[a].stu_sum << "\t" << stu[a].stu_average << endl;
+	cout << stu[a].stu_sum << "\t" << setiosflags(ios::fixed) << setprecision(2) << stu[a].stu_average << "\t";
+	cout << stu[a].stu_rank << endl;
 }
 
 #pragma endregion
@@ -90,17 +112,17 @@ void course_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 		{
 			course_scores_sum[i] = course_scores_sum[i] + stu[k].stu_score[i];
 		}
-		course_scores_average[i] = course_scores_sum[i] / n;
+		course_scores_average[i] = float(course_scores_sum[i]) / n;
 	}
 	//Êä³ö²¿·Ö
 	for (int i = 0; i < course_num; i++)
 	{
-		cout << "course" << i + 1 << ": sum=" << course_scores_sum[i] << ", aver=" << course_scores_average[i] << endl;
+		cout << "course" << i + 1 << ": sum=" << course_scores_sum[i] << setiosflags(ios::fixed) << setprecision(2) << ", aver=" << course_scores_average[i] << endl;
 	}
 }
 
-//²Ëµ¥3 - ¼ÆËãÃ¿¸öÑ§ÉúµÄ×Ü·ÖºÍÆ½¾ù·Ö
-void student_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
+//²Ëµ¥3 - ¼ÆËãÃ¿¸öÑ§ÉúµÄ×Ü·ÖºÍÆ½¾ù·Ö£¨³É¼¨Â¼ÈëºóÁ¢¿ÌÍê³É¼ÆËã²¿·Ö£©
+void load_student_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 {
 	//¼ÆËã²¿·Ö
 	for (int i = 0; i < n; i++)//Öğ¸ö¼ÆËãÃ¿¸öÑ§ÉúµÄ×Ü·ÖºÍÆ½¾ù·Ö
@@ -109,18 +131,24 @@ void student_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊ
 		{
 			stu[i].stu_sum = stu[i].stu_sum + stu[i].stu_score[j];
 		}
-		stu[i].stu_average = stu[i].stu_sum / course_num;
+		stu[i].stu_average = float(stu[i].stu_sum) / course_num;
 	}
+}
+
+//²Ëµ¥3 - ¼ÆËãÃ¿¸öÑ§ÉúµÄ×Ü·ÖºÍÆ½¾ù·Ö
+void student_scores_sum_and_average(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
+{
 	//Êä³ö²¿·Ö
 	for (int i = 0; i < n; i++)
 	{
-		cout << stu[i].stu_name << ": sum=" << stu[i].stu_sum << ", aver=" << stu[i].stu_average << endl;
+		cout << stu[i].stu_name << ": sum=" << stu[i].stu_sum << setiosflags(ios::fixed) << setprecision(2) << ", aver=" << stu[i].stu_average << endl;
 	}
 }
 
 //²Ëµ¥11 - Êä³öÃ¿¸öÑ§ÉúµÄÑ§ºÅ¡¢ĞÕÃû¡¢¸÷¿Æ¿¼ÊÔ³É¼¨£¬ÒÔ¼°Ã¿ÃÅ¿Î³ÌµÄ×Ü·ÖºÍÆ½¾ù·Ö
 void score_output(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 {
+	score_title();
 	for (int i = 0; i < n; i++)//Öğ¸öÊä³öÑ§ÉúµÄ³É¼¨Ìõ
 	{
 		score_bar(stu, i);
@@ -135,61 +163,88 @@ void score_output(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 ///ÅÅĞò¹¦ÄÜ
 ///
 
-//²Ëµ¥4¡¢5 - °´Ã¿¸öÑ§ÉúµÄ×Ü·Ö¡¾ÓÉ¸ßµ½µÍ/ÓÉµÍµ½¸ß¡¿ÅÅ³öÃû´Î±í¡¢²Ëµ¥6 - °´Ñ§ºÅÓÉĞ¡µ½´óÅÅ³ö³É¼¨±í
-void score_list(student_scores stu[], int sym)//sym=4Îª°´×Ü·ÖÓÉ¸ßµ½µÍ£¬5Îª°´×Ü·ÖÓÉµÍµ½¸ß£»sym==6Îª°´Ñ§ºÅÓÉĞ¡µ½´ó
+//¼ÆËãÑ§Éú×Ü·Ö×ÜÅÅÃû£¨³É¼¨Â¼ÈëºóÁ¢¿ÌÍê³ÉÅÅÃû¼ÆËã£©
+void load_score_list(student_scores stu[], int n)
 {
-	int a = 0;
-	int *temp = nullptr;
-	temp = new int[stu_num];
-	if (sym == 4 || sym == 5||sym==0)
-	{
-		for (int i = 0; i <stu_num; i++)
-			temp[i] = stu[i].stu_sum;
-	}
-	
-	if (sym == 6)
-	{
-		for (int i = 0; i < stu_num; i++)
-			temp[i] = stu[i].stu_id;
-	}
-
-	for (int i = 0; i < stu_num; i++)
+	int a;
+	int* temp = new int[n];
+	for (int i = 0; i < n; i++)
+		temp[i] = stu[i].stu_sum;
+	for (int i = 0; i < n; i++)
 	{
 		a = 0;
-		for (int j = 0; j < stu_num; j++)
+		for (int j = 0; j < n; j++)
+			a = temp[j] > temp[a] ? j : a;
+		temp[a] = 0;
+		stu[a].stu_rank = i + 1;
+	}
+}
+
+//²Ëµ¥ 4/5 - °´Ã¿¸öÑ§ÉúµÄ×Ü·Ö ÓÉ¸ßµ½µÍ/ÓÉµÍµ½¸ß ÅÅ³öÃû´Î±í
+void score_list(student_scores stu[], int n, int high_low)
+{
+	cout << "Sort in ascending order by score :" << endl;
+	score_title();
+	if (high_low == 1)
+	{
+		for (int i = 1; i <= n; i++)
 		{
-			if (sym == 4||sym==0) a = temp[j] > temp[a] ? j : a;
-			if (sym == 5 || sym == 6)
+			for (int j = 0; j < n; j++)
 			{
-				a = temp[a] < temp[j] ? a : j;
+				if (stu[j].stu_rank == i)
+					score_bar(stu, j);
 			}
 		}
-		if (sym == 4||sym==0) temp[a] = 0;
-		if (sym == 5 || sym == 6) temp[a] = 99999999;
-		if (sym == 4 || sym == 0)
+	}
+	else
+	{
+		for (int i = n; i >= 1; i--)
 		{
-			temp[a] = 0;
-			stu[a].stu_list = i + 1;
+			for (int j = 0; j < n; j++)
+			{
+				if (stu[j].stu_rank == i)
+					score_bar(stu, j);
+			}
 		}
-		if(sym!=0) score_bar(stu, a);
+	}
+}
+
+//²Ëµ¥6 - °´Ñ§ºÅÓÉĞ¡µ½´óÅÅ³ö³É¼¨±í
+void id_list(student_scores stu[], int n)
+{
+	cout << "Sort in ascending order by number :" << endl;
+	int a;
+	int* temp = new int[n];
+	for (int i = 0; i < n; i++)
+		temp[i] = stu[i].stu_id;
+	score_title();
+	for (int i = 0; i < n; i++)
+	{
+		a = 0;
+		for (int j = 0; j < n; j++)
+			a = temp[j] < temp[a] ? j : a;
+		temp[a] = 99999999;
+		score_bar(stu, a);
 	}
 	cout << endl;
 }
 
-//²Ëµ¥7 - °´ĞÕÃûµÄ×ÖµäË³ĞòÅÅ³ö³É¼¨±í
-void name_list(student_scores stu[])
-{
-	int a;
-	string *temp = new string[stu_num];
-	for (int i = 0; i <stu_num; i++)
-		temp[i] = stu[i].stu_name;
 
-	for (int i = 0; i < stu_num; i++)
+//²Ëµ¥7 - °´ĞÕÃûµÄ×ÖµäË³ĞòÅÅ³ö³É¼¨±í
+void name_list(student_scores stu[], int n)
+{
+	cout << "Sort in dictionary order by name:" << endl;
+	int a;
+	string *temp = new string[n];
+	for (int i = 0; i < n; i++)
+		temp[i] = stu[i].stu_name;
+	score_title();
+	for (int i = 0; i < n; i++)
 	{
 		a = 0;
-		for (int j = 0; j < stu_num; j++)
+		for (int j = 0; j < n; j++)
 			a = temp[j] < temp[a] ? j : a;
-		temp[a] = '~';
+		temp[a] = "~";
 		score_bar(stu, a);
 	}
 	cout << endl;
@@ -213,7 +268,7 @@ void checking_out_for_id(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 	{
 		if (stu[i].stu_id == checking_stu_id)
 		{
-			printf("%d\t",stu[i].stu_list);
+			score_title();
 			score_bar(stu, i);
 			break;
 		}
@@ -233,7 +288,7 @@ void checking_out_for_name(student_scores stu[], int n)//nÎªÑ§ÉúÊµ¼ÊÈËÊı
 	{
 		if (stu[i].stu_name == checking_stu_name)
 		{
-			printf("%d\t", stu[i].stu_list);
+			score_title();
 			score_bar(stu, i);
 			break;
 		}
@@ -400,12 +455,11 @@ int main()
 			}
 		}
 
-		score_list(stu, 0);
-
 		switch (menu)
 		{
 		case 1:
 			student_scores_input(stu, stu_num);
+			score_loading(stu);
 			break;
 		case 2:
 			course_scores_sum_and_average(stu, stu_num);
@@ -414,20 +468,16 @@ int main()
 			student_scores_sum_and_average(stu, stu_num);
 			break;
 		case 4:
-			printf("Sort in descending order by score:\n");
-			score_list(stu, menu);
+			score_list(stu, stu_num, 1);
 			break;
 		case 5:
-			printf("Sort in ascending order by score:\n");
-			score_list(stu, menu);
+			score_list(stu, stu_num, 0);
 			break;
 		case 6:
-			printf("Sort in ascending order by number:\n");
-			score_list(stu, menu);
+			id_list(stu, stu_num);
 			break;
 		case 7:
-			printf("Sort in dictionary order by name:\n");
-			name_list(stu);
+			name_list(stu, stu_num);
 			break;
 		case 8:
 			checking_out_for_id(stu, stu_num);
@@ -443,6 +493,7 @@ int main()
 			break;
 		case 12:
 			recovery(stu, stu_num);
+			score_loading(stu);
 			break;
 		case 13:
 			backup(stu, stu_num);
