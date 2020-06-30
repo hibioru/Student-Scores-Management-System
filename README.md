@@ -114,7 +114,7 @@ Windows SDK 版本：10.0.17763.0
 >（7）按姓名的字典顺序排出成绩表；
 >（8）按学号查询学生排名及其考试成绩；
 >（9）按姓名查询学生排名及其考试成绩；
->（10）按优秀（90~100）、良好（80~89）、中等（70~79）、及格（60~69）、不及格（0~59）5个类别，对每门课程分别统计每个类别的人数以及所占的百分比；
+>（10）按优秀（90-100）、良好（80-89）、中等（70-79）、及格（60-69）、不及格（0-59）5个类别，对每门课程分别统计每个类别的人数以及所占的百分比；
 >（11）输出每个学生的学号、姓名、各科考试成绩，以及每门课程的总分和平均分。
 >
 >附加要求：
@@ -133,7 +133,3 @@ Windows SDK 版本：10.0.17763.0
     <img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/66733317?s=64&amp;v=4" width="64" height="64" alt="@131wcc">
     <a herf="https://github.com/131wcc">131wcc&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a>
 </p>
-
-
-### 请给我们一个Star吧！
-<iframe src="https://ghbtns.com/github-btn.html?user=hibioru&repo=Student-Scores-Management-System&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160" height="30" title="GitHub" align="middle"></iframe>
