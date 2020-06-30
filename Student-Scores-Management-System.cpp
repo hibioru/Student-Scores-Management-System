@@ -2,6 +2,12 @@
 #include <fstream>//C++文件流标准库
 #include <iomanip>//C++输入输出操纵标准库
 #include <string>//C++String类标准库
+
+//以下三个头文件用于创建弹出式文件选择窗体
+#include <windows.h>//Windows图形设备接口函数
+#include <Commdlg.h>
+#include <cstdio>//C++标准输入输出库
+
 using namespace std;
 
 ///C++标准：C++11
@@ -348,23 +354,53 @@ void count(student_scores stu[])
 //菜单12 - 恢复学生成绩数据
 void recovery(student_scores stu[], int n)
 {
-	cout << "Input course number(m<=6):" << endl;
-	cin >> course_num;
-	ifstream fin("scores record.txt");
-	for (int i = 0; i < n; i++)
+	
+	//<-弹出窗口选择数据文件
+	OPENFILENAME ofn;
+	char szFile[300];
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = (LPWSTR)szFile;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = L"Scores Record\0*.score\0Text\0*.txt\0All\0*.*\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	//弹出窗口选择数据文件->
+
+	if (GetOpenFileName(&ofn))
 	{
-		fin >> stu[i].stu_id >> stu[i].stu_name;
-		for (int j = 0; j < course_num; j++)
-			fin >> stu[i].stu_score[j];
+		cout << "Successfully choose the path." << endl;
+		wprintf(L"%s\n", ofn.lpstrFile);
+		
+		//数据文件导入
+		ifstream fin(ofn.lpstrFile);
+		fin >> course_num;
+		for (int i = 0; i < n; i++)
+		{
+			fin >> stu[i].stu_id >> stu[i].stu_name;
+			for (int j = 0; j < course_num; j++)
+				fin >> stu[i].stu_score[j];
+		}
+		fin.close();
+		cout << "Recovery successfully." << endl;
 	}
-	fin.close();
-	cout << "Recovery successfully." << endl;
+	else
+	{
+		cout << "User cancel the Recovery." << endl;
+	}
 }
 
 //菜单13 - 备份学生成绩数据
 void backup(student_scores stu[], int n)
 {
-	ofstream fout("scores record.txt");
+	ofstream fout("scores record.score");
+	fout << course_num << endl;
 	for (int i = 0; i < n; i++)
 	{
 		fout << stu[i].stu_id << "\t" << stu[i].stu_name << "\t";
