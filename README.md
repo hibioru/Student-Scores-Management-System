@@ -73,7 +73,7 @@
 
 <p align="center">
     <p align="center">（演示实例 - 主菜单界面）</p>
-    <img src="./Docs/demo-example.png" alt="run-flow">
+    <img src="./Docs/demo-example.png" alt="demo">
 </p>
 
 
