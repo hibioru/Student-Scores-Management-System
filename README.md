@@ -58,7 +58,7 @@
 
 请到[Release](https://github.com/hibioru/Student-Scores-Management-System/releases)页面查看最新的发布版本  
 
-<img alt="tag" src="./Docs/tag.svg" width="20" height="20">[2.0.0](https://github.com/hibioru/Student-Scores-Management-System/releases/tag/2.0.0)
+<img alt="tag" src="./Docs/tag.svg" width="16" height="16">[2.0.0](https://github.com/hibioru/Student-Scores-Management-System/releases/tag/2.0.0)
 
 
 > 1.完成了题目的所有要求（V5标准）  
